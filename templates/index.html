@@ -3,8 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <title>首页</title>
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.js"></script>
 </head>
+
 <body>
     <p><h4>这是我新建的网页</h4></p>
+    <ul>
+        <li>
+            <a  class = 'baidu' href="">百度</a>
+        </li>
+    </ul>
 </body>
+<script type="application/javascript">
+    $(function () {
+            $("a").click(function () {
+                var url = "www.baidu.com"
+                $("a").attr("href",url);
+            })
+    })
+</script>
 </html>
