@@ -13,7 +13,6 @@ import pymysql
 import json
 from urllib.request import urlopen, quote
 import requests
-
 browser = webdriver.Chrome()
 def get_data(sql):
     conn = pymysql.connect('127.0.0.1','root','132441','aqi',charset = 'utf8')

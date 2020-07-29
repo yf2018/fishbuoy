@@ -1,16 +1,26 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-# @Time    : 2020/7/21 20:09
-# @File    : views.py
+# @Time    : 2020/7/26 15:58
+# @File    : getLngLat.py
 # @Software: Pycharm
 # @Author  : Changan
-
-from django.http import HttpResponse
-from django.shortcuts import render
+import os
 import pymysql
-import requests
-import json
 
+sql =  sql = "select * from city_aqi"
+conn = pymysql.connect('127.0.0.1', 'root', '132441', 'aqi', charset = 'utf8')
+cur = conn.cursor()
+cur.execute(sql)
+results = cur.fetchall()  # 搜取所有结果
+cur.close()
+conn.close()
+list = []
+for res in results:
+    data = {}
+    data['city'] = res[2]+'市'
+    data['aqi'] = res[4]
+    list.append(data)
+print(list)
 lngLat =  [{"北京市": [116.395645,39.929986],
                 "天津市": [117.210813,39.14393],
                 "上海市": [121.487899,31.249162],
@@ -382,42 +392,3 @@ lngLat =  [{"北京市": [116.395645,39.929986],
                 "新余市": [114.947117,27.822322],
                 "鹰潭市": [117.03545,28.24131]
                 }]
-def index(request):
-    return render(request,'index.html')
-def mapshow(request):
-    sql = "select * from city_aqi"
-    m_data = get_data(sql)
-    ranknum = []
-    quality = []
-    location = []
-    province = []
-    aqi = []
-    pm25 = []
-    longitude = []
-    latitude = []
-    m_list = []
-    for list in m_data:
-        # ranknum.append(list[0])
-        # quality.append(list[1])
-        # location.append(list[2])
-        # province.append(list[3])
-        # aqi.append(list[4])
-        # pm25.append(list[5])
-        data = {}
-        data['city'] = list[2] + '市'
-        data['aqi'] = list[4]
-        m_list.append(data)
-    context = {
-        'data':m_list,
-        'lngLat':lngLat
-    }
-    print(context)
-    return render(request,'mapshow.html',{'context':context})
-def get_data(sql):
-    conn = pymysql.connect('127.0.0.1', 'root', '132441', 'aqi', charset = 'utf8')
-    cur = conn.cursor()
-    cur.execute(sql)
-    results = cur.fetchall()  # 搜取所有结果
-    cur.close()
-    conn.close()
-    return results
